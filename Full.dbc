@@ -1,0 +1,226 @@
+VERSION ""
+
+
+NS_ : 
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+	BO_TX_BU_
+	BA_DEF_REL_
+	BA_REL_
+	BA_DEF_DEF_REL_
+	BU_SG_REL_
+	BU_EV_REL_
+	BU_BO_REL_
+	SG_MUL_VAL_
+
+BS_:
+
+BU_: Charger Battery2 Battery1 DBCU Diag
+VAL_TABLE_ Vt_Sig_Immo_Flag 1 "Start enabled" 0 "Start disabled" ;
+VAL_TABLE_ Diag_Battery_Command_Code 26 "Cell 14 voltage" 25 "Cell 13 voltage" 24 "Cell 12 voltage" 23 "Cell 11 voltage" 22 "Cell 10 voltage" 21 "Cell 9 voltage" 20 "Cell 8 voltage" 19 "Cell 7 voltage" 18 "Cell 6 voltage" 17 "Cell 5 voltage" 16 "Cell 4 voltage" 15 "Cell 3 voltage" 14 "Cell 2 voltage" 13 "Cell 1 voltage" 12 "# chg cycles total" 11 "Longest stand time btwn charge" 10 "Time Alive (Seconds connected?)" 9 "Manu date" 8 "Design Max/Min Voltage" 7 "Design Capacity" 6 "Cell Balance Status" 5 "Errors" 4 "MOSFET Temp" 3 "Cell Temp 2" 2 "Cell Temp 1" 1 "Request Battery Build Info" 0 "No Command" ;
+VAL_TABLE_ Diag_IPC_Units_Code 3 "No action" 2 "Set to KMs" 1 "Set to Miles" 0 "No action" ;
+VAL_TABLE_ Diag_IPC_Command_Code 2 "Set Units" 1 "Request IPC Build Info" 0 "No Command" ;
+VAL_TABLE_ Tell_Tale_State 3 "Flashing, 1Hz, 50% Duty Cycle" 2 "Flashing, 0.5Hz, 50% Duty Cycle" 1 "On" 0 "Off" ;
+VAL_TABLE_ Switch_State 1 "Pressed" 0 "Not Pressed" ;
+VAL_TABLE_ Units_Config 1 "KPH/Kilometers" 0 "MPH/Miles" ;
+VAL_TABLE_ Contactor_Request 3 "Undefined" 2 "Close" 1 "Open" 0 "Undefined" ;
+VAL_TABLE_ State 1 "YES" 0 "NO" ;
+VAL_TABLE_ Contactors 3 "Fault" 2 "Closed" 1 "Closing/Precharging" 0 "Open" ;
+VAL_TABLE_ Vt_Sig_Charger_Controlmode 1 "Remote Control C-V-Limiting" 0 "Open Circuit" ;
+VAL_TABLE_ DBC_States 7 "2 batts run" 6 "1 batt run" 5 "2 batts startup" 4 "1 batt startup" 3 "Start_Push_Wait" 2 "Batt2_Detect" 1 "Batt1_Detect" 0 "Init" ;
+
+
+BO_ 1907 Diag_Batteries_Rx: 8 Diag
+ SG_ Diag_Battery_Command : 0|8@1+ (1,0) [0|0] ""  Battery2,Battery1
+
+BO_ 1924 Battery2_Diag1: 8 Battery2
+ SG_ Diag_Battery_Command_Conf : 0|8@1+ (1,0) [0|0] ""  Diag
+
+BO_ 1923 Battery1_Diag1: 8 Battery1
+ SG_ Diag_Battery_Command_Conf : 0|8@1+ (1,0) [0|0] ""  Diag
+
+BO_ 802 Battery2_Tx_3: 8 Battery2
+ SG_ Battery_Contactors_Charge : 13|2@1+ (1,0) [0|0] ""  Charger
+ SG_ Battery_Fault_Charge : 12|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Battery_SoC_Button_Input : 11|1@1+ (1,0) [0|0] ""  Diag
+ SG_ Battery_Address_Input : 10|1@1+ (1,0) [0|0] ""  DBCU
+ SG_ Battery_ACC_Input : 9|1@1+ (1,0) [0|0] ""  DBCU
+ SG_ Battery_Balancing_In_Progress : 8|1@1+ (1,0) [0|0] ""  DBCU
+ SG_ Battery_Precharge_Failed : 4|1@1+ (1,0) [0|0] ""  DBCU
+ SG_ Battery_OverTemp_Fault : 3|1@1+ (1,0) [0|0] ""  DBCU
+ SG_ Battery_OverCurrent_Warning : 2|1@1+ (1,0) [0|0] ""  DBCU
+ SG_ Battery_OverCurrent_Fault : 1|1@1+ (1,0) [0|0] ""  DBCU
+ SG_ Battery_Fault_Discharge : 5|1@1+ (1,0) [0|0] ""  DBCU
+ SG_ Battery_Contactors_Discharge : 6|2@1+ (1,0) [0|0] ""  DBCU
+ SG_ Battery_Communication_Fault : 0|1@1+ (1,0) [0|0] ""  DBCU
+
+BO_ 801 Battery2_Tx_2: 8 Battery2
+ SG_ Battery_SoC : 56|8@1+ (1,0) [0|100] "%"  Charger,DBCU
+ SG_ Battery_Min_Temperature : 32|8@1+ (1,-40) [-40|215] "C"  DBCU
+ SG_ Battery_Min_Cell_Voltage : 7|16@0+ (0.1,0) [0|6553.5] "mV"  DBCU
+ SG_ Battery_Max_Temperature : 40|8@1+ (1,-40) [-40|215] "C"  DBCU
+ SG_ Battery_Max_Cell_Voltage : 23|16@0+ (0.1,0) [0|6553.5] "mV"  DBCU
+ SG_ Battery_Capacity : 48|8@1+ (0.5,0) [0|127.5] "Ah"  DBCU
+
+BO_ 800 Battery2_Tx_1: 8 Battery2
+ SG_ Battery_Instant_Volt : 7|16@0+ (1,0) [0|65535] "mV"  DBCU
+ SG_ Battery_Instant_Current : 23|16@0- (0.1,0) [-3276.8|3276.7] "A"  DBCU
+ SG_ Battery_Dischg_Current_Limit : 39|16@0+ (-0.1,0) [-6553.5|0] "A"  DBCU
+ SG_ Battery_Chg_Current_Limit : 55|16@0+ (0.1,0) [0|6553.5] "A"  Charger,DBCU
+
+BO_ 817 Battery2_Rx_1: 1 DBCU
+ SG_ Battery_Contactor_Request : 0|2@1+ (1,0) [0|0] ""  Battery2
+
+BO_ 816 Battery1_Rx_1: 1 DBCU
+ SG_ Battery_Contactor_Request : 0|2@1+ (1,0) [0|0] ""  Battery1
+
+BO_ 786 Battery1_Tx_3: 8 Battery1
+ SG_ Battery_Contactors_Charge : 13|2@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Battery_Fault_Charge : 12|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Battery_SoC_Button_Input : 11|1@1+ (1,0) [0|0] ""  Diag
+ SG_ Battery_Address_Input : 10|1@1+ (1,0) [0|0] ""  DBCU
+ SG_ Battery_ACC_Input : 9|1@1+ (1,0) [0|0] ""  DBCU
+ SG_ Battery_Balancing_In_Progress : 8|1@1+ (1,0) [0|0] ""  DBCU
+ SG_ Battery_Precharge_Failed : 4|1@1+ (1,0) [0|0] ""  DBCU
+ SG_ Battery_OverTemp_Fault : 3|1@1+ (1,0) [0|0] ""  DBCU
+ SG_ Battery_OverCurrent_Warning : 2|1@1+ (1,0) [0|0] ""  DBCU
+ SG_ Battery_OverCurrent_Fault : 1|1@1+ (1,0) [0|0] ""  DBCU
+ SG_ Battery_Fault_Discharge : 5|1@1+ (1,0) [0|0] ""  DBCU
+ SG_ Battery_Contactors_Discharge : 6|2@1+ (1,0) [0|0] ""  DBCU
+ SG_ Battery_Communication_Fault : 0|1@1+ (1,0) [0|0] ""  DBCU
+
+BO_ 785 Battery1_Tx_2: 8 Battery1
+ SG_ Battery_SoC : 56|8@1+ (1,0) [0|100] "%"  DBCU
+ SG_ Battery_Min_Temperature : 32|8@1+ (1,-40) [-40|215] "C"  DBCU
+ SG_ Battery_Min_Cell_Voltage : 7|16@0+ (0.1,0) [0|6553.5] "mV"  DBCU
+ SG_ Battery_Max_Temperature : 40|8@1+ (1,-40) [-40|215] "C"  DBCU
+ SG_ Battery_Max_Cell_Voltage : 23|16@0+ (0.1,0) [0|6553.5] "mV"  DBCU
+ SG_ Battery_Capacity : 48|8@1+ (0.5,0) [0|127.5] "Ah"  DBCU
+
+BO_ 784 Battery1_Tx_1: 8 Battery1
+ SG_ Battery_Instant_Volt : 7|16@0+ (1,0) [0|65535] "mV"  DBCU
+ SG_ Battery_Instant_Current : 23|16@0- (0.1,0) [-3276.8|3276.7] "A"  DBCU
+ SG_ Battery_Dischg_Current_Limit : 39|16@0+ (-0.1,0) [-6553.5|0] "A"  DBCU
+ SG_ Battery_Chg_Current_Limit : 55|16@0+ (0.1,0) [0|6553.5] "A"  DBCU
+
+BO_TX_BU_ 817 : Charger,DBCU;
+
+
+CM_ BU_ Battery2 "Secondary Battery";
+CM_ BU_ Battery1 "Primary Battery";
+CM_ BU_ DBCU "Dual Battery Control unit";
+CM_ BU_ Diag "Diagnostic Tool
+
+Only present when diagnostic tool is connected to the motorcycle";
+CM_ BO_ 1907 "Event driven";
+CM_ BO_ 1924 "Response to Diag_Batteries_Rx.
+
+Data depends on page requested.";
+CM_ BO_ 1923 "Response to Diag_Batteries_Rx.
+
+Data depends on page requested.";
+CM_ BO_ 802 "300ms Cycle Time";
+CM_ SG_ 802 Battery_Contactors_Charge "Status of Discharge MOSFETs";
+CM_ SG_ 802 Battery_Fault_Charge "Set to 1 if any fault has caused Charge MOSFET to be open";
+CM_ SG_ 802 Battery_SoC_Button_Input "Set to 1 if 'SOC check button' is currently pressed on battery pack";
+CM_ SG_ 802 Battery_Address_Input "Status of Address input (Is it connected to ground?)";
+CM_ SG_ 802 Battery_ACC_Input "Status of ACC input (is it connected to 12v?)";
+CM_ SG_ 802 Battery_Balancing_In_Progress "Set to 1 if balancing is in progress";
+CM_ SG_ 802 Battery_Precharge_Failed "Set to 1 if precharge does not complete. Open contactors";
+CM_ SG_ 802 Battery_OverTemp_Fault "Set to 1 if any temperature exceeds cell datasheet temperature, or if the MOSFETS are too hot. Open contactors.";
+CM_ SG_ 802 Battery_OverCurrent_Warning "Set to 1 if Instant_Current exceeds Current_Limit by >5% for > 5s";
+CM_ SG_ 802 Battery_OverCurrent_Fault "Set to 1 if Instant_Current exceeds Current_Limit by > 15% for > 10s. Open Contactors.";
+CM_ SG_ 802 Battery_Fault_Discharge "Set to 1 if any fault has caused Discharge MOSFET to be open";
+CM_ SG_ 802 Battery_Contactors_Discharge "Status of Discharge MOSFETs";
+CM_ SG_ 802 Battery_Communication_Fault "Set to 1 if BMS does not receive control message (0x300 for Battery 1, 0x301 for Battery 2) for > 5s. Open contactors
+";
+CM_ BO_ 801 "250ms Cycle Time";
+CM_ SG_ 801 Battery_Min_Temperature "Lowest cell temperature currently being measured";
+CM_ SG_ 801 Battery_Min_Cell_Voltage "Lowest cell voltage currently being measured";
+CM_ SG_ 801 Battery_Max_Temperature "Highest cell temperature currently being measured";
+CM_ SG_ 801 Battery_Max_Cell_Voltage "Highest cell voltage currently being measured";
+CM_ BO_ 800 "50ms Cycle Time";
+CM_ SG_ 800 Battery_Instant_Volt "Instantaneous Battery pack voltage";
+CM_ SG_ 800 Battery_Instant_Current "Negative current is Discharge";
+CM_ SG_ 800 Battery_Dischg_Current_Limit "Derated Dicharge current limit based on SOC, temperature etc";
+CM_ SG_ 800 Battery_Chg_Current_Limit "Derated Charge current limit based on SOC, temperature etc";
+CM_ BO_ 817 "100ms Cycle Time";
+CM_ BO_ 816 "100ms Cycle Time
+";
+CM_ BO_ 786 "300ms Cycle Time";
+CM_ SG_ 786 Battery_Contactors_Charge "Status of Discharge MOSFETs";
+CM_ SG_ 786 Battery_Fault_Charge "Set to 1 if any fault has caused Charge MOSFET to be open";
+CM_ SG_ 786 Battery_SoC_Button_Input "Set to 1 if 'SOC check button' is currently pressed on battery pack";
+CM_ SG_ 786 Battery_Address_Input "Status of Address input (Is it connected to ground?)";
+CM_ SG_ 786 Battery_ACC_Input "Status of ACC input (is it connected to 12v?)";
+CM_ SG_ 786 Battery_Balancing_In_Progress "Set to 1 if balancing is in progress";
+CM_ SG_ 786 Battery_Precharge_Failed "Set to 1 if precharge does not complete. Open contactors";
+CM_ SG_ 786 Battery_OverTemp_Fault "Set to 1 if any temperature exceeds cell datasheet temperature, or if the MOSFETS are too hot. Open contactors.
+";
+CM_ SG_ 786 Battery_OverCurrent_Warning "Set to 1 if Instant_Current exceeds Current_Limit by >5% for > 5s";
+CM_ SG_ 786 Battery_OverCurrent_Fault "Set to 1 if Instant_Current exceeds Current_Limit by > 15% for > 10s. Open Contactors";
+CM_ SG_ 786 Battery_Fault_Discharge "Set to 1 if any fault has caused Discharge MOSFET to be open";
+CM_ SG_ 786 Battery_Contactors_Discharge "Status of Discharge MOSFETs";
+CM_ SG_ 786 Battery_Communication_Fault "Set to 1 if BMS does not receive control message (0x300 for Battery 1, 0x301 for Battery 2) for > 5s. Open contactors
+";
+CM_ BO_ 785 "250ms Cycle Time";
+CM_ SG_ 785 Battery_Min_Temperature "Lowest cell temperature currently being measured";
+CM_ SG_ 785 Battery_Min_Cell_Voltage "Lowest cell voltage currently being measured";
+CM_ SG_ 785 Battery_Max_Temperature "Highest cell temperature currently being measured";
+CM_ SG_ 785 Battery_Max_Cell_Voltage "Highest cell voltage currently being measured";
+CM_ BO_ 784 "50ms Cycle Time";
+CM_ SG_ 784 Battery_Instant_Volt "Instantaneous Battery pack voltage
+";
+CM_ SG_ 784 Battery_Instant_Current "Instantaneous Current. Note: Negative current is Discharge";
+CM_ SG_ 784 Battery_Dischg_Current_Limit "Derated Dicharge current limit based on SOC, temperature etc";
+CM_ SG_ 784 Battery_Chg_Current_Limit "Derated Charge current limit based on SOC, temperature etc";
+BA_DEF_  "BusType" STRING ;
+BA_DEF_DEF_  "BusType" "CAN";
+VAL_ 1907 Diag_Battery_Command 8 "Read Page #8 data" 7 "Read Page #7 data" 6 "Read Page #6 data" 5 "Read Page #5 data" 4 "Read Page #4 data" 3 "Read Page #3 data" 2 "Read Page #2 data" 1 "Read Page #1 data" 0 "No Command" ;
+VAL_ 802 Battery_Contactors_Charge 3 "Fault" 2 "Closed" 1 "Closing/Precharging" 0 "Open" ;
+VAL_ 802 Battery_Fault_Charge 1 "YES" 0 "NO" ;
+VAL_ 802 Battery_SoC_Button_Input 1 "YES" 0 "NO" ;
+VAL_ 802 Battery_Address_Input 1 "YES" 0 "NO" ;
+VAL_ 802 Battery_ACC_Input 1 "YES" 0 "NO" ;
+VAL_ 802 Battery_Balancing_In_Progress 1 "YES" 0 "NO" ;
+VAL_ 802 Battery_Precharge_Failed 1 "YES" 0 "NO" ;
+VAL_ 802 Battery_OverTemp_Fault 1 "YES" 0 "NO" ;
+VAL_ 802 Battery_OverCurrent_Warning 1 "YES" 0 "NO" ;
+VAL_ 802 Battery_OverCurrent_Fault 1 "YES" 0 "NO" ;
+VAL_ 802 Battery_Fault_Discharge 1 "YES" 0 "NO" ;
+VAL_ 802 Battery_Contactors_Discharge 3 "Fault" 2 "Closed" 1 "Closing/Precharging" 0 "Open" ;
+VAL_ 802 Battery_Communication_Fault 1 "YES" 0 "NO" ;
+VAL_ 817 Battery_Contactor_Request 3 "Undefined" 2 "Close" 1 "Open" 0 "Undefined" ;
+VAL_ 816 Battery_Contactor_Request 3 "Undefined" 2 "Close" 1 "Open" 0 "Undefined" ;
+VAL_ 786 Battery_Contactors_Charge 3 "Fault" 2 "Closed" 1 "Closing/Precharging" 0 "Open" ;
+VAL_ 786 Battery_Fault_Charge 1 "YES" 0 "NO" ;
+VAL_ 786 Battery_SoC_Button_Input 1 "YES" 0 "NO" ;
+VAL_ 786 Battery_Address_Input 1 "YES" 0 "NO" ;
+VAL_ 786 Battery_ACC_Input 1 "YES" 0 "NO" ;
+VAL_ 786 Battery_Balancing_In_Progress 1 "YES" 0 "NO" ;
+VAL_ 786 Battery_Precharge_Failed 1 "YES" 0 "NO" ;
+VAL_ 786 Battery_OverTemp_Fault 1 "YES" 0 "NO" ;
+VAL_ 786 Battery_OverCurrent_Warning 1 "YES" 0 "NO" ;
+VAL_ 786 Battery_OverCurrent_Fault 1 "YES" 0 "NO" ;
+VAL_ 786 Battery_Fault_Discharge 1 "YES" 0 "NO" ;
+VAL_ 786 Battery_Contactors_Discharge 3 "Fault" 2 "Closed" 1 "Closing/Precharging" 0 "Open" ;
+VAL_ 786 Battery_Communication_Fault 1 "YES" 0 "NO" ;
+

@@ -1,0 +1,11 @@
+{
+    "led_red": 0,
+    "led_amber": 0,
+    "led_green": 0,
+    "batt_rly": 0,
+    "prech_rly": 0,
+    "inv_rly": 0,
+    "ac_rly": 0,
+    "batt_interlock": 0,
+    "batt_enable": 0 
+}
