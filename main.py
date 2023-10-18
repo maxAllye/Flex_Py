@@ -220,10 +220,3 @@ while True:
     #     control["led_amber"] = True
 
 exit()
-
-    
-
-        
-    
-
-    

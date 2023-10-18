@@ -1,48 +1,45 @@
-#------------------------ testing dbc load -------------------------------
-# import cantools
-# import json
+import RPi.GPIO as GPIO
+import time
 
-# # Load the DBC file
-# dbc_file = "Full.dbc"
-# database = cantools.database.load_file(dbc_file)
+# Define the GPIO pins and corresponding labels
+pin_data = {
+    6: "output",
+    27: "pre-charge",
+    5: "interlock",
+    4: "main"
+}
 
-# # Create a dictionary to store the JSON representation
-# json_data = {}
+# List of pins, for easy looping
+pins = list(pin_data.keys())
 
-# # Iterate through messages and add them to the JSON dictionary
-# for message in database.messages:
-#     message_info = {}
+# Setup the board
+GPIO.setmode(GPIO.BCM)  # Use Broadcom SoC numbering
+GPIO.setwarnings(False) # Disable warnings
+
+# Setup each pin as an output and set it to LOW
+for pin in pins:
+    GPIO.setup(pin, GPIO.OUT)
+    GPIO.output(pin, GPIO.LOW)
+
+try:
+    while True:
+        for pin in pins:
+            label = pin_data[pin]
+
+            # Turn on the current pin
+            GPIO.output(pin, GPIO.HIGH)
+            print(f"{label} is HIGH")
+            time.sleep(5) # Wait 5 seconds
+
+            # Turn off the current pin
+            GPIO.output(pin, GPIO.LOW)
+            print(f"{label} is LOW")
+
+except KeyboardInterrupt:
+    # This code runs on a keyboard interrupt, main loop is above.
+    print("Interrupted - GPIO cleanup underway.")
     
-#     # Iterate through signals within the message and add them to the message dictionary with initial value 0
-#     for signal in message.signals:
-#         message_info[signal.name] = 0
-    
-#     # Add the message dictionary to the JSON data
-#     json_data[message.name] = message_info
+    # Reset the status of the GPIO pins back to their default state (inputs)
+    GPIO.cleanup()
 
-# # Convert the dictionary to a JSON string
-# json_string = json.dumps(json_data, indent=4)
-
-# # Print or save the JSON data as needed
-# print(json_string)
-
-# # Optionally, save the JSON data to a file
-# with open("message_signal_initial_values.json", "w") as json_file:
-#     json.dump(json_data, json_file, indent=4)
-
-#--------------------------------------------------------------------------
-
-#------------------------------- 
-
-class my_class:
-    def __init__(self):
-        
-        self.my_variable = 27
-
-        return
-    
-
-classs = my_class()
-
-print(classs.my_variable)
-
+    print("GPIO cleanup completed.")

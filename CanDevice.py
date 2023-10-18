@@ -12,6 +12,7 @@ class CanDevice:
 
         #------ Setup CAN Session ------
         #setup my bus and the buffered input
+        # Socketcan means you are using a linux device ie the Raspberry Pi
         self.bus = can.interface.Bus(channel=channel, bustype="socketcan")
         self.buffered_bus = can.BufferedReader(self.bus)
         

@@ -4,7 +4,7 @@ import threading
 #Define Constants
 
 MAEVING_CAN = "can0"
-MAEVING_DBC = ""
+MAEVING_DBC = "full.dbc"
 CONTROL_FRAME_PERIOD = 100
 
 # Accesses CanDevice class and produces a Maeving instance
